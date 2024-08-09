@@ -3,13 +3,51 @@
  */
 package quiz1sistemasg2;
 
+import java.util.Scanner;
+
 public class App {
     
 
     public static void main(String[] args) {
         
-       
+        Scanner usuario = new Scanner(System.in);
+    
+        System.out.println("¿Qué tipo de vehículo estacionó?");
+        String tipoVehiculo = usuario.nextLine();
+        
 
+        System.out.println("¿Cuántas horas permaneció tu vehículo en el parqueadero?");
+        int horas = usuario.nextInt();
+        usuario.nextLine();
+
+        System.out.println("¿Usted es estudiante?");
+        int esEstudiante = usuario.nextInt();
+        usuario.nextLine();
+
+        int valorTotalHoras = calcularValorHora(tipoVehiculo, horas);
+        int valorDescuento = calcularDescuento(valorTotalHoras, esEstudiante, horas);
+        try{
+            switch (tipoVehiculo) {
+                case "C":
+                
+                    System.out.println("Usted ha estacionado un carro durante "+horas+" horas, su valor antes del descuento es: "+calcularValorHora(tipoVehiculo, horas)+".Sin embargo, el descuento aplicado es "+calcularDescuento(valorTotalHoras, esEstudiante, horas)+", de modo que finalmente el valor total a pagar incluyendo el IVA del 19% es: "+calcularFactura(valorTotalHoras, valorDescuento)); 
+                    break;
+                
+                case "M":
+                System.out.println("Usted ha estacionado una moto durante "+horas+" horas, su valor antes del descuento es: "+calcularValorHora(tipoVehiculo, horas)+".Sin embargo, el descuento aplicado es "+calcularDescuento(valorTotalHoras, esEstudiante, horas)+", de modo que finalmente el valor total a pagar incluyendo el IVA del 19% es: "+calcularFactura(valorTotalHoras, valorDescuento)); 
+                    break;
+
+                case "B":
+                System.out.println("Usted ha estacionado una bicicleta durante "+horas+" horas, su valor antes del descuento es: "+calcularValorHora(tipoVehiculo, horas)+".Sin embargo, el descuento aplicado es "+calcularDescuento(valorTotalHoras, esEstudiante, horas)+", de modo que finalmente el valor total a pagar incluyendo el IVA del 19% es: "+calcularFactura(valorTotalHoras, valorDescuento)); 
+                    break;
+                default:
+                System.out.println("Inválido");
+                    break;
+
+            }
+        } catch(Exception e){
+            System.out.println("Error");
+        }
     }
 
     /*  Implemente una funcion llamada calcularValorHora que cumpla con las siguientes caracteristicas
@@ -20,6 +58,41 @@ public class App {
             - Un entero representando el valor total de las boletas
         * Controlar errores retornando -1
     */
+        public static int calcularValorHora(String tipoVehiculo, int horas){
+            try {
+                 
+                if((tipoVehiculo.equals("C")) && horas <= 3 ){
+                    return (5000*horas);
+
+                }
+                if((tipoVehiculo.equals("C")) && horas > 3 ){
+                    return ((5000*horas) + (2000*(horas-3)));
+                }
+                if((tipoVehiculo.equals("M")) && horas <= 3 ){
+                    return (3000*horas);
+
+                }
+                if((tipoVehiculo.equals("M")) && horas > 3 ){
+                    return ((3000*horas) + (2000*(horas-3)));
+                }
+                if((tipoVehiculo.equals("B")) && horas <= 3 ){
+                    return (1000*horas);
+
+                }
+                if((tipoVehiculo.equals("B")) && horas > 3 ){
+                    return ((1000*horas) + (2000*(horas-3)));
+                }
+
+
+            } catch (Exception e) {
+                return -1;
+            }
+                return 0; 
+        }
+        
+
+
+
     //------------------------------------------------------------------
     
 
@@ -36,7 +109,23 @@ public class App {
         * Controlar errores retornando -1
     */
     //------------------------------------------------------------------
-    
+        public static int calcularDescuento(int valorTotalHoras, int esEstudiante, int horas){
+            int desValor2 = (int)(valorTotalHoras*0.3);
+            int desValor1 = (int)(valorTotalHoras*0.35);
+            try{
+            if (horas > 4 && esEstudiante == 2) {
+              return (int) (valorTotalHoras - desValor2);  
+            }
+            else if (horas > 4 && esEstudiante == 1) {
+                return (int) (valorTotalHoras - desValor1);
+            } else{
+                return 0;
+            }
+        } catch (Exception e){
+            return -1;
+        }
+       
+    }
 
 
     //------------------------------------------------------------------
@@ -49,7 +138,10 @@ public class App {
             - Un entero representando el valor del total de la factura incluyendo el iva
     */
     //------------------------------------------------------------------
-    
+        public static int calcularFactura(int valorTotalHoras, int valorDescuento){
+            double montoIva = (valorTotalHoras - valorDescuento)*0.19;
+            return (int)((valorTotalHoras - valorDescuento) + montoIva);
+        }
 
 
     //------------------------------------------------------------------
